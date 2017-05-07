@@ -2,6 +2,7 @@
 
 *.o
 *.pro.user
+*.swp
 
 .qmake.stash
 Library
