@@ -1,0 +1,4 @@
+#ignore make files, execute files
+
+*.o
+Library
