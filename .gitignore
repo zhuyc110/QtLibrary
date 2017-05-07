@@ -1,4 +1,7 @@
 #ignore make files, execute files
 
 *.o
+*.pro.user
+
+.qmake.stash
 Library
