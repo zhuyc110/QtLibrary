@@ -20,7 +20,12 @@ BookManager::BookManager()
 
 void BookManager::initBooks()
 {
-    auto file = new QFile("books.dat");
+    auto file = new QFile(bookFileName);
+    if(!file->exists())
+    {
+        cout<<QString("Book file %1 does not exist.").arg(bookFileName)<<endl;
+        return;
+    }
     if(!file->open(QIODevice::ReadOnly))
     {
         cout<<"Can not read file."<<endl;
@@ -41,6 +46,7 @@ void BookManager::initBooks()
             AddBook(book);
         }
     }
+    file->close();
 }
 
 void BookManager::initUsers()
@@ -142,4 +148,21 @@ BookManager::BorrowResult BookManager::borrowBook(QString book, QString user)
     _bookStorage->BookStorages[bookPtr->BookTitle] = storage - 1;
     cout<<QString("%1 borrowed book %2").arg(user).arg(book)<<endl;
     return BorrowResult::Succeed;
+}
+
+void BookManager::saveData()
+{
+    auto bookFile = new QFile(bookFileName);
+    if(!bookFile->open(QIODevice::WriteOnly|QIODevice::Text))
+    {
+        cout<<"Can not save book file."<<endl;
+        return;
+    }
+    QTextStream out(bookFile);
+    for(auto i = 0; i < _bookStorage->AllBooks->size(); i++)
+    {
+        auto book = _bookStorage->AllBooks->at(i);
+        out << QString("%1 : %2").arg(book->BookTitle).arg(book->Author)<<"\n";
+    }
+    bookFile->close();
 }

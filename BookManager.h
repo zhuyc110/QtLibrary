@@ -7,6 +7,8 @@
 #include <QString>
 #include <QList>
 
+static const QString bookFileName = "books.dat";
+
 class BookManager
 {
 public:
@@ -27,6 +29,7 @@ public:
     void ShowBookInfo(Book book);
 
     BorrowResult borrowBook(QString book, QString user);
+    void saveData();
 
 private:
     BookStorage* _bookStorage;

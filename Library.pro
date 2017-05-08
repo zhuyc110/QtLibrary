@@ -13,3 +13,6 @@ HEADERS += Book.h User.h BookManager.h BookStorage.h \
     libraryui.h
 SOURCES += Book.cpp User.cpp BookManager.cpp BookStorage.cpp main.cpp \
     libraryui.cpp
+
+FORMS += \
+    libraryui.ui

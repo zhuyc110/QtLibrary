@@ -8,17 +8,34 @@
 #include <QDebug>
 #include <QRegExp>
 
-LibraryUi::LibraryUi(QWidget *parent) : QMainWindow(parent)
+LibraryUi::LibraryUi(QWidget *parent) : QMainWindow(parent), ui(new Ui::LibraryUi)
 {
+    ui->setupUi(this);
+
     bookManager = new BookManager();
-    exitButton = new QPushButton(this);
-    exitButton->setText(QString("Quit"));
-    connect(exitButton, SIGNAL(clicked()), this, SLOT(onQuit()));
+
+    connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(onQuit()));
+
+    addBookButton = new QPushButton(this);
+    addBookButton->setText("Add a new book");
+    connect(addBookButton, SIGNAL(clicked()), this, SLOT(onAddNewBook()));
+}
+
+LibraryUi::~LibraryUi()
+{
+    delete ui;
 }
 
 void LibraryUi::onQuit()
 {
+    bookManager->saveData();
     QCoreApplication::quit();
+}
+
+void LibraryUi::onAddNewBook()
+{
+    auto book = new Book("Moc", "dg");
+    bookManager->AddBook(book);
 }
 
 void LibraryUi::printAllBooks()
