@@ -16,9 +16,10 @@ LibraryUi::LibraryUi(QWidget *parent) : QMainWindow(parent), ui(new Ui::LibraryU
 
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(onQuit()));
 
-    addBookButton = new QPushButton(this);
-    addBookButton->setText("Add a new book");
-    connect(addBookButton, SIGNAL(clicked()), this, SLOT(onAddNewBook()));
+    connect(ui->addBookButton, SIGNAL(clicked()), this, SLOT(onAddNewBook()));
+
+    connect(ui->plainTextEditBookName, SIGNAL(textChanged()), this, SLOT(onPlainTextEditChanged()));
+    connect(ui->plainTextEditAuthor, SIGNAL(textChanged()), this, SLOT(onPlainTextEditChanged()));
 }
 
 LibraryUi::~LibraryUi()
@@ -34,8 +35,20 @@ void LibraryUi::onQuit()
 
 void LibraryUi::onAddNewBook()
 {
-    auto book = new Book("Moc", "dg");
+    auto book = new Book(ui->plainTextEditBookName->toPlainText(), ui->plainTextEditAuthor->toPlainText());
     bookManager->AddBook(book);
+}
+
+void LibraryUi::onPlainTextEditChanged()
+{
+    if(ui->plainTextEditBookName->toPlainText().isEmpty() || ui->plainTextEditAuthor->toPlainText().isEmpty())
+    {
+        ui->addBookButton->setEnabled(false);
+    }
+    else
+    {
+        ui->addBookButton->setEnabled(true);
+    }
 }
 
 void LibraryUi::printAllBooks()

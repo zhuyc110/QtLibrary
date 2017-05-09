@@ -23,9 +23,9 @@ signals:
 private slots:
     void onQuit();
     void onAddNewBook();
+    void onPlainTextEditChanged();
 
 private:
-    QPushButton* addBookButton;
     Ui::LibraryUi* ui;
     BookManager* bookManager;
 };
