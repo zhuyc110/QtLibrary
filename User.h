@@ -9,13 +9,15 @@
 class User
 {
 public:
+    User();
     User(QString userName);
-	QString const UserName;
+    QString UserName() const;
     int UserId;
     QList<Book*> BorrowedBooks;
     QString toString(QString sep="\n") const;
 private:
     static int _userId;
+    QString _userName;
 };
 
 #endif

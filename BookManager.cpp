@@ -14,7 +14,9 @@ BookManager::BookManager()
 {
     _bookStorage = new BookStorage();
     _users = new QList<User*>();
+    cout<<"=== Starting recovering books ==="<<endl;
     initBooks();
+    cout<<"=== Starting recovering users ==="<<endl;
     initUsers();
 }
 
@@ -23,10 +25,14 @@ void BookManager::initBooks()
     auto file = new QFile(bookFileName);
     if(!file->exists())
     {
-        cout<<QString("Book file %1 does not exist.").arg(bookFileName)<<endl;
-        return;
+        cout<<QString("Book file %1 does not exist. Creating a new one...").arg(bookFileName)<<endl;
+        if(!file->open(QIODevice::ReadWrite))
+        {
+            cout<<"Can not create book data file."<<endl;
+            return;
+        }
     }
-    if(!file->open(QIODevice::ReadOnly))
+    else if(!file->open(QIODevice::ReadOnly))
     {
         cout<<"Can not read file."<<endl;
         return;
@@ -47,12 +53,44 @@ void BookManager::initBooks()
         }
     }
     file->close();
+    delete file;
 }
 
 void BookManager::initUsers()
 {
     auto user= new User(QString("user1"));
     AddUser(user);
+
+    auto file = new QFile(userFileName);
+    if(!file->exists())
+    {
+        cout<<QString("User file %1 does not exist. Creating a new one...").arg(userFileName)<<endl;
+        if(!file->open(QIODevice::ReadWrite))
+        {
+            cout<<"Can not create user data file."<<endl;
+            return;
+        }
+    }
+
+    file->open(QIODevice::ReadOnly);
+
+    QTextStream fileContent(file);
+
+    while(!fileContent.atEnd())
+    {
+        QStringList list;
+        auto oneLine = fileContent.readLine();
+        QRegExp userReg(QString("(\\w*)"));
+        auto pos = userReg.indexIn(oneLine);
+        if(pos > -1)
+        {
+            list<<userReg.cap(1);
+        }
+        else
+        {
+        }
+    }
+
 }
 
 void BookManager::ShowBookInfo(Book book)
@@ -80,7 +118,7 @@ void BookManager::AddUser(User *user)
     if(index == -1)
     {
         _users->append(user);
-        cout<<QString("Adding user: %1").arg(user->UserName)<<endl;
+        cout<<QString("Adding user: %1").arg(user->UserName())<<endl;
     }
 }
 
@@ -88,7 +126,7 @@ User* BookManager::GetUser(QString user) const
 {
     for(auto i = 0; i < _users->size(); i++)
     {
-        if(_users->at(i)->UserName == user)
+        if(_users->at(i)->UserName() == user)
         {
             return _users->at(i);
         }
@@ -140,13 +178,13 @@ BookManager::BorrowResult BookManager::borrowBook(QString book, QString user)
     auto storage = _bookStorage->BookStorages.value(bookPtr->BookTitle);
     if(storage <= 0)
     {
-        cout<<QString("Not enough %1 in storage").arg(book)<<endl;
+        cout<<QString("Not enough [%1] in storage").arg(book)<<endl;
         return BorrowResult::NotEnough;
     }
 
     userPtr->BorrowedBooks.append(bookPtr);
     _bookStorage->BookStorages[bookPtr->BookTitle] = storage - 1;
-    cout<<QString("%1 borrowed book %2").arg(user).arg(book)<<endl;
+    cout<<QString("[%1] borrowed book [%2]").arg(user).arg(book)<<endl;
     return BorrowResult::Succeed;
 }
 

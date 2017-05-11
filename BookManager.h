@@ -8,6 +8,7 @@
 #include <QList>
 
 static const QString bookFileName = "books.dat";
+static const QString userFileName = "users.dat";
 
 class BookManager
 {
