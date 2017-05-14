@@ -17,6 +17,7 @@ LibraryUi::LibraryUi(QWidget *parent) : QMainWindow(parent), ui(new Ui::LibraryU
     connect(ui->exitButton, SIGNAL(clicked()), this, SLOT(onQuit()));
 
     connect(ui->addBookButton, SIGNAL(clicked()), this, SLOT(onAddNewBook()));
+    connect(ui->addUserButton, SIGNAL(clicked()), this, SLOT(onAddNewUser()));
 
     connect(ui->plainTextEditBookName, SIGNAL(textChanged()), this, SLOT(onPlainTextEditChanged()));
     connect(ui->plainTextEditAuthor, SIGNAL(textChanged()), this, SLOT(onPlainTextEditChanged()));
@@ -37,6 +38,12 @@ void LibraryUi::onAddNewBook()
 {
     auto book = new Book(ui->plainTextEditBookName->toPlainText(), ui->plainTextEditAuthor->toPlainText());
     bookManager->AddBook(book);
+}
+
+void LibraryUi::onAddNewUser()
+{
+    auto user = new User(ui->plainTextEditUserName->toPlainText());
+    bookManager->AddUser(user);
 }
 
 void LibraryUi::onPlainTextEditChanged()

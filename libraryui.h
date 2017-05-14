@@ -23,6 +23,7 @@ signals:
 private slots:
     void onQuit();
     void onAddNewBook();
+    void onAddNewUser();
     void onPlainTextEditChanged();
 
 private:

@@ -34,6 +34,9 @@ public:
     QLabel *lableBookName;
     QPlainTextEdit *plainTextEditAuthor;
     QLabel *lableAuthor;
+    QPushButton *addUserButton;
+    QLabel *label;
+    QPlainTextEdit *plainTextEditUserName;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -46,7 +49,7 @@ public:
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         exitButton = new QPushButton(centralwidget);
         exitButton->setObjectName(QStringLiteral("exitButton"));
-        exitButton->setGeometry(QRect(10, 230, 85, 29));
+        exitButton->setGeometry(QRect(390, 230, 85, 29));
         addBookButton = new QPushButton(centralwidget);
         addBookButton->setObjectName(QStringLiteral("addBookButton"));
         addBookButton->setEnabled(false);
@@ -66,6 +69,16 @@ public:
         lableAuthor = new QLabel(centralwidget);
         lableAuthor->setObjectName(QStringLiteral("lableAuthor"));
         lableAuthor->setGeometry(QRect(110, 50, 81, 21));
+        addUserButton = new QPushButton(centralwidget);
+        addUserButton->setObjectName(QStringLiteral("addUserButton"));
+        addUserButton->setGeometry(QRect(10, 120, 85, 29));
+        label = new QLabel(centralwidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(110, 120, 81, 21));
+        plainTextEditUserName = new QPlainTextEdit(centralwidget);
+        plainTextEditUserName->setObjectName(QStringLiteral("plainTextEditUserName"));
+        plainTextEditUserName->setGeometry(QRect(200, 120, 151, 31));
+        plainTextEditUserName->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         LibraryUi->setCentralWidget(centralwidget);
         menubar = new QMenuBar(LibraryUi);
         menubar->setObjectName(QStringLiteral("menubar"));
@@ -84,9 +97,11 @@ public:
     {
         LibraryUi->setWindowTitle(QApplication::translate("LibraryUi", "Library", Q_NULLPTR));
         exitButton->setText(QApplication::translate("LibraryUi", "Quit", Q_NULLPTR));
-        addBookButton->setText(QApplication::translate("LibraryUi", "AddBook", Q_NULLPTR));
+        addBookButton->setText(QApplication::translate("LibraryUi", "Add book", Q_NULLPTR));
         lableBookName->setText(QApplication::translate("LibraryUi", "Book name", Q_NULLPTR));
         lableAuthor->setText(QApplication::translate("LibraryUi", "Author", Q_NULLPTR));
+        addUserButton->setText(QApplication::translate("LibraryUi", "Add user", Q_NULLPTR));
+        label->setText(QApplication::translate("LibraryUi", "User name", Q_NULLPTR));
     } // retranslateUi
 
 };

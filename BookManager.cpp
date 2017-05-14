@@ -71,8 +71,12 @@ void BookManager::initUsers()
             return;
         }
     }
+    else if(!file->open(QIODevice::ReadOnly))
+    {
+        cout<<"Can not read user file."<<endl;
+        return;
+    }
 
-    file->open(QIODevice::ReadOnly);
 
     QTextStream fileContent(file);
 
