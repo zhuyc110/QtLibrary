@@ -118,19 +118,23 @@ void BookManager::AddBook(Book* book, int amount /*= 1*/)
 
 void BookManager::AddUser(User *user)
 {
-    auto index = _users->indexOf(user);
-    if(index == -1)
+    auto index = GetUser(user->UserName());
+    if(index == nullptr)
     {
         _users->append(user);
         cout<<QString("Adding user: %1").arg(user->UserName())<<endl;
     }
+    else
+    {
+        cout<<QString("User already exists!").arg(user->UserName())<<endl;
+    }
 }
 
-User* BookManager::GetUser(QString user) const
+User* BookManager::GetUser(QString userName) const
 {
     for(auto i = 0; i < _users->size(); i++)
     {
-        if(_users->at(i)->UserName() == user)
+        if(_users->at(i)->UserName() == userName)
         {
             return _users->at(i);
         }
@@ -200,11 +204,27 @@ void BookManager::saveData()
         cout<<"Can not save book file."<<endl;
         return;
     }
-    QTextStream out(bookFile);
+    QTextStream bookOut(bookFile);
     for(auto i = 0; i < _bookStorage->AllBooks->size(); i++)
     {
         auto book = _bookStorage->AllBooks->at(i);
-        out << QString("%1 : %2").arg(book->BookTitle).arg(book->Author)<<"\n";
+        bookOut << QString("%1 : %2").arg(book->BookTitle).arg(book->Author)<<"\n";
     }
     bookFile->close();
+    delete bookFile;
+
+    auto userFile = new QFile(userFileName);
+    if(!userFile->open(QIODevice::WriteOnly|QIODevice::Text))
+    {
+        cout<<"Can not save user file."<<endl;
+        return;
+    }
+    QTextStream userOut(userFile);
+    for(auto i = 0; i < _users->size(); i++)
+    {
+        auto user = _users->at(i);
+        userOut << user->toString()<<"\n";
+    }
+    userFile->close();
+    delete userFile;
 }

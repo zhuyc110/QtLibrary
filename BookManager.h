@@ -25,7 +25,7 @@ public:
     void AddBook(Book* book, int amount=1);
     void AddUser(User* user);
     Book* GetBook(QString bookTitle) const;
-    User* GetUser(QString user) const;
+    User* GetUser(QString userName) const;
     void printAllBooks();
     void ShowBookInfo(Book book);
 

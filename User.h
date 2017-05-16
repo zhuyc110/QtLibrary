@@ -14,7 +14,7 @@ public:
     QString UserName() const;
     int UserId;
     QList<Book*> BorrowedBooks;
-    QString toString(QString sep="\n") const;
+    QString toString(QString sep="$") const;
 private:
     static int _userId;
     QString _userName;
