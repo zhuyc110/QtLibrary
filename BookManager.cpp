@@ -58,9 +58,6 @@ void BookManager::initBooks()
 
 void BookManager::initUsers()
 {
-    auto user= new User(QString("user1"));
-    AddUser(user);
-
     auto file = new QFile(userFileName);
     if(!file->exists())
     {
@@ -77,21 +74,25 @@ void BookManager::initUsers()
         return;
     }
 
-
     QTextStream fileContent(file);
 
     while(!fileContent.atEnd())
     {
-        QStringList list;
         auto oneLine = fileContent.readLine();
-        QRegExp userReg(QString("(\\w*)"));
+        QRegExp userReg(QString("(\\w+)\\$Book \\d+ : (\\w+)"));
         auto pos = userReg.indexIn(oneLine);
         if(pos > -1)
         {
-            list<<userReg.cap(1);
+            auto username = userReg.cap(1);
+            auto bookTitle = userReg.cap(2);
+            auto user = new User(username);
+            AddUser(user);
+            auto book = GetBook(bookTitle);
+            user->BorrowedBooks.append(book);
         }
         else
         {
+            cout<<QString("Can not determine %1").arg(oneLine)<<endl;
         }
     }
 
@@ -140,7 +141,7 @@ User* BookManager::GetUser(QString userName) const
         }
     }
 
-    cout<<"GetUser: null ptr"<<endl;
+    cout<<QString("Can not find user: %1").arg(userName)<<endl;
     return nullptr;
 }
 
@@ -188,6 +189,15 @@ BookManager::BorrowResult BookManager::borrowBook(QString book, QString user)
     {
         cout<<QString("Not enough [%1] in storage").arg(book)<<endl;
         return BorrowResult::NotEnough;
+    }
+
+    for(auto i = 0; i< userPtr->BorrowedBooks.size(); i++)
+    {
+        if(userPtr->BorrowedBooks.at(i)->BookTitle == bookPtr->BookTitle)
+        {
+            cout<<QString("Book %1 is already borrowed by user %2").arg(bookPtr->BookTitle).arg(userPtr->UserName())<<endl;
+            return BorrowResult::InputError;
+        }
     }
 
     userPtr->BorrowedBooks.append(bookPtr);

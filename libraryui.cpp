@@ -19,8 +19,10 @@ LibraryUi::LibraryUi(QWidget *parent) : QMainWindow(parent), ui(new Ui::LibraryU
     connect(ui->addBookButton, SIGNAL(clicked()), this, SLOT(onAddNewBook()));
     connect(ui->addUserButton, SIGNAL(clicked()), this, SLOT(onAddNewUser()));
 
-    connect(ui->plainTextEditBookName, SIGNAL(textChanged()), this, SLOT(onPlainTextEditChanged()));
-    connect(ui->plainTextEditAuthor, SIGNAL(textChanged()), this, SLOT(onPlainTextEditChanged()));
+    connect(ui->plainTextEditBookName, SIGNAL(textChanged()), this, SLOT(onBookPlainTextEditChanged()));
+    connect(ui->plainTextEditAuthor, SIGNAL(textChanged()), this, SLOT(onBookPlainTextEditChanged()));
+
+    connect(ui->plainTextEditUserName, SIGNAL(textChanged()), this, SLOT(onUserPlainTextEditChanged()));
 }
 
 LibraryUi::~LibraryUi()
@@ -46,7 +48,7 @@ void LibraryUi::onAddNewUser()
     bookManager->AddUser(user);
 }
 
-void LibraryUi::onPlainTextEditChanged()
+void LibraryUi::onBookPlainTextEditChanged()
 {
     if(ui->plainTextEditBookName->toPlainText().isEmpty() || ui->plainTextEditAuthor->toPlainText().isEmpty())
     {
@@ -55,6 +57,18 @@ void LibraryUi::onPlainTextEditChanged()
     else
     {
         ui->addBookButton->setEnabled(true);
+    }
+}
+
+void LibraryUi::onUserPlainTextEditChanged()
+{
+    if(ui->plainTextEditUserName->toPlainText().isEmpty())
+    {
+        ui->addUserButton->setEnabled(false);
+    }
+    else
+    {
+        ui->addUserButton->setEnabled(true);
     }
 }
 
