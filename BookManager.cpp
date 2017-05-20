@@ -10,10 +10,14 @@ using namespace std;
 
 QTextStream cout(stdout);
 
-BookManager::BookManager()
+BookManager::BookManager() : QObject()
 {
     _bookStorage = new BookStorage();
     _users = new QList<User*>();
+}
+
+void BookManager::init()
+{
     cout<<"=== Starting recovering books ==="<<endl;
     initBooks();
     cout<<"=== Starting recovering users ==="<<endl;
@@ -113,6 +117,7 @@ void BookManager::AddBook(Book* book, int amount /*= 1*/)
         {
             _bookStorage->AllBooks->append(book);
             cout<<QString("Adding book: %1").arg(book->BookTitle)<<endl;
+            emit onBookAdded(book);
         }
     }
 }

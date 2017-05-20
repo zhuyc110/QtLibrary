@@ -26,6 +26,7 @@ private slots:
     void onAddNewUser();
     void onBookPlainTextEditChanged();
     void onUserPlainTextEditChanged();
+    void onBookAdded(Book* book);
 
 private:
     Ui::LibraryUi* ui;

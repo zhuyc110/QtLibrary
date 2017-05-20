@@ -23,6 +23,9 @@ LibraryUi::LibraryUi(QWidget *parent) : QMainWindow(parent), ui(new Ui::LibraryU
     connect(ui->plainTextEditAuthor, SIGNAL(textChanged()), this, SLOT(onBookPlainTextEditChanged()));
 
     connect(ui->plainTextEditUserName, SIGNAL(textChanged()), this, SLOT(onUserPlainTextEditChanged()));
+
+    connect(bookManager, SIGNAL(onBookAdded(Book*)), this, SLOT(onBookAdded(Book*)));
+    bookManager->init();
 }
 
 LibraryUi::~LibraryUi()
@@ -70,6 +73,11 @@ void LibraryUi::onUserPlainTextEditChanged()
     {
         ui->addUserButton->setEnabled(true);
     }
+}
+
+void LibraryUi::onBookAdded(Book *book)
+{
+    ui->listWidgetBookList->addItem(book->BookTitle);
 }
 
 void LibraryUi::printAllBooks()

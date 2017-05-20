@@ -6,12 +6,14 @@
 #include "BookStorage.h"
 #include <QString>
 #include <QList>
+#include <QObject>
 
 static const QString bookFileName = "books.dat";
 static const QString userFileName = "users.dat";
 
-class BookManager
+class BookManager : public QObject
 {
+    Q_OBJECT
 public:
 
     enum BorrowResult
@@ -22,6 +24,7 @@ public:
     };
 
     BookManager();
+    void init();
     void AddBook(Book* book, int amount=1);
     void AddUser(User* user);
     Book* GetBook(QString bookTitle) const;
@@ -31,6 +34,9 @@ public:
 
     BorrowResult borrowBook(QString book, QString user);
     void saveData();
+
+signals:
+    void onBookAdded(Book* book);
 
 private:
     BookStorage* _bookStorage;
